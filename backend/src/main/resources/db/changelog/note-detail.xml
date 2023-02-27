@@ -25,6 +25,13 @@
         baseTableName="note_detail"
         constraintName="fk_car_owner_id"
         referencedColumnNames="id"
-        referencedTableName="user"/>
+        referencedTableName="user_"/>
+    </changeSet>
+
+    <changeSet author="alistair" id="insert-test-note-detail-data2">
+     
+        <sql>
+            INSERT INTO `note_detail` ( title, content, created_at, updated_at, owner_user_id) VALUES ( 'Test Note 1', 'This is a test note 1.', NOW(), NOW(), 1), ( 'Test Note 2', 'This is a test note 2.', NOW(), NOW(), 1), ( 'Test Note 3', 'This is a test note 3.', NOW(), NOW(), 2), ( 'Test Note 4', 'This is a test note 4.', NOW(), NOW(), 2), ( 'Test Note 5', 'This is a test note 5.', NOW(), NOW(), 2); 
+                </sql>
     </changeSet>
 </databaseChangeLog>

@@ -2,20 +2,26 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
     <changeSet author="alistair" id="create-user-table">
-        <createTable tableName="user">
+        <createTable tableName="user_">
             <column name="id" type="INT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP">
+            <column name="created_at" type="DATETIME" defaultValueDate="now()">
                 <constraints nullable="false"/>
             </column>
-            <column name="updated_at" type="DATETIME" defaultValueDate="CURRENT_TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP">
+            <column name="updated_at" type="DATETIME" defaultValueDate="now()" defaultValueComputed="now() ON UPDATE now()">
                 <constraints nullable="false"/>
             </column>
            
         </createTable>
+    </changeSet>
+
+    <changeSet author="Alistair" id="populate-test-data" context="dev">
+        <sql>
+            INSERT INTO `user_` (`name`, `created_at`, `updated_at`) VALUES ('user1', now(), now()), ('user2', now(), now()), ('user3', now(), now());
+          </sql>
     </changeSet>
 </databaseChangeLog>
