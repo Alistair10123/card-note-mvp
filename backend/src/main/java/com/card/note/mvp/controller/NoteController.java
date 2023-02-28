@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.card.note.mvp.dto.NoteDTO;
 import com.card.note.mvp.entity.NoteDetail;
 import com.card.note.mvp.service.NoteService;
 
@@ -27,22 +28,22 @@ public class NoteController {
 
     @GetMapping("/{id}")
     @ApiOperation(value = "Get a note by id", notes = "Returns a note with the given id")
-    public NoteDetail getNoteById(@PathVariable("id") Long id) {
+    public NoteDTO getNoteById(@PathVariable("id") Long id) {
         return noteService.getNoteDetail(id).get();
     }
 
     @PostMapping("")
     @ApiOperation(value = "Create a new note", notes = "Creates a new note with the given details")
-    public Mono<NoteDetail> createNoteDetail(@RequestBody NoteDetail noteDetail) {
-        return Mono.just(noteService.saveNoteDtail(noteDetail));
+    public Mono<NoteDetail> createNoteDetail(@RequestBody NoteDTO noteDTO) {
+        return Mono.just(noteService.saveNoteDtail(noteDTO));
     }
 
     @PutMapping("/{id}")
     @ApiOperation(value = "Update an existing note", notes = "Updates an existing note with the given details")
-    public Mono<NoteDetail> updateNoteDetail(@PathVariable(value = "id") Long id,
-            @RequestBody NoteDetail noteDetail) {
-        noteDetail.setId(id);
-        return Mono.just(noteService.saveNoteDtail(noteDetail));
+    public Mono<NoteDTO> updateNoteDetail(@PathVariable(value = "id") Long id,
+            @RequestBody NoteDTO noteDTO) {
+       
+        return Mono.just(noteService.updateNoteDtail(id,noteDTO));
     }
 
     @DeleteMapping("/{id}")
