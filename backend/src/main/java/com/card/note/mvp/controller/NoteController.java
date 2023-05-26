@@ -35,7 +35,7 @@ public class NoteController {
     @PostMapping("")
     @ApiOperation(value = "Create a new note", notes = "Creates a new note with the given details")
     public Mono<NoteDetail> createNoteDetail(@RequestBody NoteDTO noteDTO) {
-        return Mono.just(noteService.saveNoteDtail(noteDTO));
+        return noteService.saveNoteDtail(noteDTO);
     }
 
     @PutMapping("/{id}")

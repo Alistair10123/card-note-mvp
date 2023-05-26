@@ -9,7 +9,7 @@ import com.card.note.mvp.entity.NoteDetail;
 public interface NoteDetailMapper {
     
 
-    NoteDTO toDTO(NoteDetail noteDetail);
+    NoteDTO toDTO(NoteDetail noteDetil);
     
     NoteDetail toEntity(NoteDTO dto);
 

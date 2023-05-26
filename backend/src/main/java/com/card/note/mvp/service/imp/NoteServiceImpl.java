@@ -11,7 +11,11 @@ import com.card.note.mvp.entity.NoteDetail;
 import com.card.note.mvp.mapper.NoteDetailMapper;
 import com.card.note.mvp.repository.NoteDetailRepository;
 import com.card.note.mvp.repository.UserRepository;
+import com.card.note.mvp.security.SecurityUtils;
 import com.card.note.mvp.service.NoteService;
+import com.card.note.mvp.service.UserService;
+
+import reactor.core.publisher.Mono;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -25,6 +29,9 @@ public class NoteServiceImpl implements NoteService {
     @Autowired
     private NoteDetailMapper noteMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Override
     @Transactional
     public Optional<NoteDTO> getNoteDetail(Long noteId) {
@@ -35,10 +42,20 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     @Transactional
-    public NoteDetail saveNoteDtail(NoteDTO noteDTO) {
-        NoteDetail noteDetail = noteMapper.toEntity(noteDTO);
-        userRepository.findById(1L).ifPresent(u -> noteDetail.setOwnerUser(u));
-        return noteDetailRepository.save(noteDetail);
+    public Mono<NoteDetail> saveNoteDtail(NoteDTO noteDTO) {
+       return  SecurityUtils.getCurrentUserLogin()
+        .flatMap(login -> userService.getUserWithAuthoritiesByLogin(login))
+        .flatMap(user -> {
+            if(user != null) {
+                NoteDetail noteDetail = noteMapper.toEntity(noteDTO);
+                noteDetail.setOwnerUser(user);
+                return Mono.just(noteDetailRepository.save(noteDetail));
+            }else {
+                return Mono.error(new RuntimeException("not login user"));
+            }
+           
+        });
+        
     }
 
     @Override
